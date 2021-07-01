@@ -23,18 +23,6 @@ type SonarQubeProxyer interface {
 	Server() *http.Server
 }
 
-func modifyResponse(r *http.Response) error {
-	c := r.StatusCode
-	switch {
-	case c < http.StatusOK:
-		panic(http.StatusBadGateway)
-	case c < http.StatusInternalServerError:
-		panic(http.StatusNotFound)
-	default:
-		panic(http.StatusBadGateway)
-	}
-}
-
 func (s *SonarQubeProxy) director(req *http.Request) {
 	req.URL.Scheme = s.remote.Scheme
 	req.URL.Host = s.remote.Host
